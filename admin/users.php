@@ -20,7 +20,9 @@ include ("includes/content-top.php");?>
                         <th>Username</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+<!--                        <th>Email id</th>-->
                         <th>Position</th>
+<!--                        <th>address</th>-->
                        <th>Orders</th>
                         <th>View</th>
                         <th>Edit?</th>
@@ -38,9 +40,12 @@ include ("includes/content-top.php");?>
                             <td><?php echo $user->username; ?></td>
                             <td><?php echo $user->first_name; ?></td>
                             <td><?php echo $user->last_name; ?></td>
+<!--                            <td>--><?php //echo $user->email; ?><!--</td>-->
                             <td><?php
                                 $role = Role::find_by_id($user->roleID);
                                 echo $role->position; ?></td>
+
+                         <!--   <td><?php /*echo $user->address; */?></td>-->
                             <td>
                                 <a href="orders_user.php?id=<?php echo $user->id; ?>">
                                     <?php

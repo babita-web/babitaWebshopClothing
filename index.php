@@ -6,10 +6,10 @@ include('includes/header.php');
 
 $user = User::find_all();
 
-/*
+
 if (!$session->is_signed_in()) {
     redirect('login.php');
-}*/
+}
 
 
 include ("includes/content_top.php");
@@ -30,7 +30,7 @@ if(isset($_POST['submitorder'])){
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-$items_per_page = 5;
+$items_per_page = 12;
 $items_total_count = Product::count_all ();
 
 $paginate = new Paginate($page, $items_per_page, $items_total_count);
@@ -272,109 +272,49 @@ $products = Product::find_this_query ($sql);
         </div>
     </div>
 
+
     <div class="row isotope-grid">
-
-        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-            <!-- Block2 -->
-            <div class="block2">
-                <?php foreach($products as $product): ?>
-                <div class="block2-pic hov-img0">
-                    <a href="view.php?id=<?php echo $product->id; ?>">
-                        <img src="<?php echo 'admin'.DS.$product->picture_path();?>">
-
-
-                        Quick View
-                    </a>
-                </div>
-
-                <div class="block2-txt flex-w flex-t p-t-14">
-                    <div class="block2-txt-child1 flex-col-l ">
-                        <a href="product.php" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                            <?php echo $product->title; ?>
-
-                            <span class="stext-105 cl3">
-								<?php echo "PRICE: ".$product->price; ?>
-								</span>
-                    </div>
-
-                    <div class="block2-txt-child2 flex-r p-t-3">
-                        <button name="submitorder" type="submit" class="btn btn-primary">add to cart</button>
-                        <a href="product.php" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                            <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
-                            <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
+        <?php foreach($products as $product): ?>
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                <div class="block">
+                    <div class="block2-pic hov-img0">
+                        <form method="post" action="product.php?action=add&id=<?php echo $product->id;?>"
+                        <a href="view.php?id=<?php echo $product->id; ?>">
+                            <img src="<?php echo 'admin'.DS.$product->picture_path();?>" width="200px" height="400px">
                         </a>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item watches">
-            <!-- Block2 -->
-            <div class="block2">
-                <div class="block2-pic hov-img0">
-                    <img src="images/product-15.jpg" alt="IMG-PRODUCT">
-
-                    <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                        Quick View
-                    </a>
-                </div>
-
-                <div class="block2-txt flex-w flex-t p-t-14">
-                    <div class="block2-txt-child1 flex-col-l ">
-                        <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                            Mini Silver Mesh Watch
+                        <br>
+                        <br>
+                        <a href="view.php?id=<?php echo $product->id; ?>">
+                            <h4 class="text-info"><?php echo $product->title . ":     € ".$product->price;?></h4>
                         </a>
 
-                        <span class="stext-105 cl3">
-									$86.85
-								</span>
+
+                        <label for="tentacles">Select Quantity:</label>
+                        <div class="media">
+
+                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-minus"></i>
+                            </div>
+
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="quantity" value="1">
+
+                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-plus"></i>
+                            </div>
+                        </div>
+                        <input type="hidden" name="hidden_name" value="<?php echo $product->title; ?>"/>
+                        <input type="hidden" name="hidden_price" value="<?php echo $product->price; ?>"/>
+                        <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="add to cat"/>
                     </div>
-
-                    <div class="block2-txt-child2 flex-r p-t-3">
-                        <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                            <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
-                            <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Load more -->
-
-
-
-
-        <div class="flex-c-m flex-w w-full p-t-45">
-            <div class="row">
-
-                <div class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                    <?php
-
-                    if($paginate->has_previous ()){
-                        echo "<class='previous'><a href='product.php?page={$paginate->previous ()}'>Previous</a>"." ";
-                    }
-                    for ($i=1; $i <= $paginate->page_total (); $i++){
-                        if($i == $paginate->current_page){
-                            echo " <class='active'><a href='product.php?page={$i}'>{$i}</a>". "   ";
-                        }else{
-                            echo "<a href='product.php?page={$i}'>{$i}</a>"." ";
-                        }
-                    }
-                    if($paginate->has_next()){
-                        echo "<class='next'><a href='product.php?page={$paginate->next ()}'>Next</a>"." ";
-                    }?>
-                    <br>
-
-                    <?php   echo "PAGE ". $paginate->current_page;
-                    ?>
+                    </form>
                 </div>
             </div>
 
-        </div>
+        <?php endforeach; ?>
+
+
     </div>
+
 </section>
 
 <?php

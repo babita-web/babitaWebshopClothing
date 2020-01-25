@@ -1,7 +1,7 @@
 <?php
 include ("includes/header.php");
 require_once('admin/includes/init.php');
-redirect ('index.php');
+redirect ('login.php');
 ?>
 
 <?php

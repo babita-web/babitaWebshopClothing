@@ -11,6 +11,8 @@ if (isset( $_POST['submit'] )) {
         $user->last_name = $_POST['last_name'];
         $user->password = $_POST['password'];
         $user->roleID = (int )$_POST['roleID'];
+        $user->email = $_POST['email'];
+        $user->address = $_POST['address'];
         $user->set_file($_FILES['user_image']);
 
         $user->save();
@@ -53,6 +55,16 @@ include ("includes/content-top.php"); ?>
                                         <option value="<?= $role->id; ?>"><?= $role->position; ?></option>;
                                     <?php endforeach; ?>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="address" name="address" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="file">User image</label>

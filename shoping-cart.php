@@ -6,40 +6,7 @@ include('includes/header.php');
 $products = Product::find_all ();
 $total = 0;
 $tellen=0;
-/*
-if(isset($_POST["add_to_cart"]))
-{
-    if(isset($_SESSION["shopping_cart"]))
-    {
-        $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-        if(!in_array($_GET["id"], $item_array_id))
-        {
-            $count = count($_SESSION["shopping_cart"]);
-            $item_array = array(
-                'item_id'       => $_GET["id"],
-                'item_name'     => $_POST["hidden_name"],
-                'item_price'    => $_POST["hidden_price"],
-                'item_quantity' => $_POST["quantity"]
-            );
-            $_SESSION["shopping_cart"][$count] = $item_array;
-        }
-        else
-        {
-            echo '<script>alert("Item Already Added")</script>';
-            echo '<script>window.location="product.php"</script>';
-        }
-    }
-    else
-    {
-        $item_array = array(
-            'item_id'       => $_GET["id"],
-            'item_name'     => $_POST["hidden_name"],
-            'item_price'    => $_POST["hidden_price"],
-            'item_quantity' => $_POST["quantity"]
-        );
-        $_SESSION["shopping_cart"][0] = $item_array;
-    }
-}*/
+
 $user = User::find_all();
 
 if(isset($_POST['submitorder'])){
@@ -126,8 +93,8 @@ if(isset($_GET["action"]))
                              $total = $total + ($values["item_quantity"] * $values["item_price"]);
                                 } ?>
                             <tr>
-                            <td colspan="5" align="right"> total</td>
-                            <td align="right"> $ <?php echo number_format($total,2);  ?></td>
+                            <td colspan="4" align="right"> total</td>
+                            <td align="right"> € <?php echo number_format($total,2);  ?></td>
                             <td></td>
                             </tr>
 

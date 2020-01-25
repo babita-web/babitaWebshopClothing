@@ -117,6 +117,8 @@ if(isset($_GET["action"]))
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
+
+    <link rel="stylesheet" type="text/css" href="css/style21.css" />
 </head>
 <body class="animsition">
 
@@ -136,19 +138,14 @@ if(isset($_GET["action"]))
                         Help & FAQs
                     </a>
 
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="m">
-
-
-                            <?php if(isset($_SESSION['user'])){
+                    <?php  if (!$session->is_signed_in()) {
+                            if(isset($_SESSION['user'])){
                                 echo $_SESSION['user'];
-                            } else{
-                                echo "User";
+                           } else{
+                         echo "User";
+                            }
                             }
                             ?>
-
-
-
                         </span>
                     </a>
 
@@ -281,7 +278,7 @@ if(isset($_GET["action"]))
                 <i class="zmdi zmdi-search"></i>
             </div>
 
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="2">
+            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="<?php Order::count_all();?>">
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
 
@@ -463,11 +460,8 @@ if(isset($_GET["action"]))
                     ?>
                     <div class="header-cart-item-img">
                         <?php foreach($products as $product): ?>
-                        <a href="view.php?id=<?php echo $product->id; ?>">
-                            <img class="img-fluid rounded" src="<?php echo'admin'.DS.$product->picture_path(); ?>" width="50" height="50" alt="">
-                        </a>
+                        <?php $product->image_path_and_placeholder();?>
                         <?php endforeach;?>
-                    </div>
 
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
@@ -481,10 +475,11 @@ if(isset($_GET["action"]))
 <span>Total: <?php echo number_format($values["item_quantity"] * $values["item_price"], 2); ?></span>
 
                     </div>
+                    </div>
                 </li>
-
+<div class="col">
                 <a href="product.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span
-                            class="text-danger">Remove</span></a></td>
+                            class="text-danger">Remove</span></a></td></div>
 <hr>
                                 <?php
 

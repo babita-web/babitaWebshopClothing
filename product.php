@@ -8,7 +8,7 @@ if(isset($_POST["add_to_cart"]))
 {
 
     if(isset($_SESSION["shopping_cart"])){
-    var_dump($_SESSION["shopping_cart"]);
+   // var_dump($_SESSION["shopping_cart"]);
 
         $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
         if(!in_array($_GET["id"], $item_array_id))
@@ -278,7 +278,7 @@ if(isset($_GET["action"]))
                         <br>
                         <br>
                         <a href="view.php?id=<?php echo $product->id; ?>">
-                            <h4 class="text-info"><?php echo $product->title . "        ".$product->price;?></h4>
+                            <h4 class="text-info"><?php echo $product->title . ":     € ".$product->price;?></h4>
                         </a>
 
 

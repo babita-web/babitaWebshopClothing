@@ -5,7 +5,7 @@
 class Product extends Db_object
 {
     protected static $db_table = "products";
-    protected static $db_table_fields = array('title', 'description', 'category_id', 'price','photo_id');
+    protected static $db_table_fields = array('title', 'description', 'category_id', 'order_id', 'price','photo_id');
     public $id;
     public $title;
     public $order_id;

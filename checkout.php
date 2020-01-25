@@ -1,5 +1,52 @@
-<?php include ("includes/header.php");?>
-<br><br><br>
+
+<!DOCTYPE html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+</head>
+
+
+<?php
+include ('admin/includes/init.php');
+include "includes/header.php";
+include "includes/babita.php";
+if(!$session->is_signed_in ()){
+    redirect ('login.php');
+}
+$user = User::find_by_id($_SESSION['user_id']);
+$products= Product::find_all();
+$shopping_cart=New Shopping_cart();
+$shopping_cart=$_SESSION['shopping_cart'];
+
+
+if (isset($_GET["id"])) {
+        $order=new Order();
+        $order->user_id=$user->id;
+        $order->total_price=$_SESSION['total_price'];
+        $order->username;
+        $order->address;
+        $order->email=$user->email;
+        $order->date_order = date('Y-m-d h:i:s',time());
+
+        $order->create();
+        $user_orders=Order::find_the_user_orders($user->id);
+        $last_order= $user_orders[array_key_last($user_orders)];
+       /* foreach ($shopping_cart->items as $Qnt=>$product):
+            $order_details=new Order_details();
+            $order_details->order_id=$last_order->id;
+            $order_details->quantity=$quantities[$Qnt];
+            $order_details->product_id=$product->id;
+            $order_details->title=$product->title;
+            $order_details->price=$product->price;
+            $order_details->create();
+        endforeach;*/
+
+
+    }
+?>
+
+
     <div class="container">
         <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
             <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
@@ -29,69 +76,123 @@
                     <div class="col-md-4 order-md-2 mb-4">
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-muted">Your cart</span>
-                            <span class="badge badge-secondary badge-pill">3</span>
+                            <span class="badge badge-secondary badge-pill"></span>
                         </h4>
+
+
+    <ul class="list-group mb-3">
+    <table class="table">
+        <thead>
+        <tr>
+
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Qnty</th>
+            <th scope="col">Total Price</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php if(!empty($_SESSION["shopping_cart"])) {
+            $total = 0;
+            $tellen= 0;?>
+            <?php foreach ($_SESSION["shopping_cart"] as $keys => $values) {
+                ?>
+
+                <tr>
+                <!-- <form method="post" action="product.php?action=add&id=<?php /*echo $product->id; */?>">-->
+                <div class="col">
+
+                    <td> <h6 class="my-0"><?php echo $values["item_name"]; ?></h6></td>
+                    <td> <h6 class="my-0"><?php echo $values["item_price"]; ?></h6></td>
+                    <td>  <h6 class="my-0"> <?php echo $values["item_quantity"]; ?></h6></td>
+
+                    <td><h6 class="my-0"><?php echo ($values["item_quantity"] * $values["item_price"]); ?></h6>
+                    </td>
+                    <?php $total = $total + ($values["item_quantity"] * $values["item_price"]);
+                        $tellen = $tellen + $values["item_quantity"];?>
+
+                </div>
+                </tr>
+            <?php  }?>
+
+        <?php }?>
+        </tbody>
+
+    </table>
+    <hr>
+    <h3 class="mtext-109 cl2 p-b-30">
+        Total : <?php echo number_format($total,2);?>  €
+        <br>
+        Total items:  <?php echo $tellen;?></h3>
+    <div class="m-l-25 m-r--38 m-lr-0-xl">
+        <?php if($total<100) {
+            $total = 6 + $total;
+            echo " 6 euro for shipping charge for a order under 100 €";
+        } ?><br>
+    </div>
+    </ul>
+
+
+
+
+
                         <ul class="list-group mb-3">
-<?php
-if(!empty($_SESSION["shopping_cart"])) {
-    $total = 0;
-    $tellen= 0;?>
+<!-- Set up a container element for the button -->
+    <div id="paypal-button-container"></div>
 
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                               <?php foreach ($_SESSION["shopping_cart"] as $keys => $values) {
-                               ?>
-                                <form method="post" action="product.php?action=add&id=<?php echo $product->id; ?>">
-                                    <div>
-                                        <h6 class="my-0"><?php echo $values["item_name"]; ?></h6>
-                                        <small class="text-muted">qty: <?php echo $values["item_quantity"]; ?></small>
-                                    </div>
-                                    <span class="text-muted"><?php echo $values["item_quantity"] * $values["item_price"]; ?></span>
+<!-- Include the PayPal JavaScript SDK -->
+        <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
 
-                                    <div><?php $total = $total + ($values["item_quantity"] * $values["item_price"]);
-                                        $tellen = $tellen + $values["item_quantity"];
-                                        }?></div>
+            <script>
+    // Render the PayPal button into #paypal-button-container
+                paypal.Buttons({
 
-                                </form>
-                            </li>
-                            <div class="m-l-25 m-r--38 m-lr-0-xl">
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value:<?php echo number_format($total,2);?>
+                    }
+                }]
+            });
+        },
 
-                                <h3 class="mtext-109 cl2 p-b-30">
-                                    Total : <?php echo number_format($total,2);?>  €
-                                    <br>
-                                    Total items:  <?php echo $tellen;?></h3>
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Show a success message to the buyer
+                alert('Transaction completed by ' + details.payer.name.given_name + '!');
 
-    <p>6 euro for shipping charge for a order under 100 €</p>
-                            </div>
+                // Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                });
+            });
+        }
 
-<?php } ?>
+
+    }).render('#paypal-button-container');
+</script>
+
+
+
                         </ul>
 
-                        <div class="payment-methods">
-                            <p class="pt-4 mb-2">Payment Options</p>
+
+                            <p>* 6 euro for shipping charge for a order under 100 €</p>
                             <hr>
-                            <ul class="list-inline d-flex">
-                                <li class="mx-1 text-info">
-                                    <i class="fa-2x fa fa-cc-visa"></i>
-                                </li>
-                                <li class="mx-1 text-info">
-                                    <i class="fa-2x fa fa-cc-stripe"></i>
-                                </li>
-                                <li class="mx-1 text-info">
-                                    <a href="index2.php">
-                                        <i class="fa-2x fa fa-cc-paypal"></i></a>
-                                </li>
-                                <li class="mx-1 text-info">
-                                    <i class="fa-2x fa fa-cc-jcb"></i>
-                                </li>
-                                <li class="mx-1 text-info">
-                                    <i class="fa-2x fa fa-cc-discover"></i>
-                                </li>
-                                <li class="mx-1 text-info">
-                                    <i class="fa-2x fa fa-cc-amex"></i>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
+
+
                     <div class="col-md-8 order-md-1">
                         <h4 class="mb-3">Billing address</h4>
                         <form class="needs-validation" novalidate>
@@ -242,4 +343,5 @@ if(!empty($_SESSION["shopping_cart"])) {
     </main>
 
     </body>
+
 <?php include ("includes/footer.php");?>

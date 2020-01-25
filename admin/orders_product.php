@@ -3,9 +3,9 @@
 if (!$session->is_signed_in()){
     redirect('login.php');
 }
-/*if (empty($_GET['id'])){
+if (empty($_GET['id'])){
     redirect('orders.php');
-}*/
+}
 
 $products = Product::find_the_order_products($_GET['id']);
 

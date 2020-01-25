@@ -178,13 +178,11 @@ $products = Product::find_the_category_products($_GET['id']);
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between">
-                <h1>All Shirts</h1>
+
+            <h2>Products Category :  <?php $category=Category::find_by_id($_GET['id']); echo $category->name_category; ?></h2>
 
             </div>
             <hr>
-            <h4>Products Category :  <?php $category=Category::find_by_id($_GET['id']); echo $category->name_category; ?></h4>
-
-
 
             <div class="row isotope-grid">
                 <?php foreach($products as $product): ?>
