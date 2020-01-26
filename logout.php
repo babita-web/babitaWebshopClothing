@@ -1,11 +1,8 @@
 <?php
 include ("includes/header.php");
-require_once('admin/includes/init.php');
-redirect ('login.php');
-?>
-
-<?php
 $session->logout ();
+redirect ('login.php');
+
 session_destroy();
 
 ?>

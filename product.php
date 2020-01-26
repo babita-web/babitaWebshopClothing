@@ -295,6 +295,7 @@ if(isset($_GET["action"]))
                                 <i class="fs-16 zmdi zmdi-plus"></i>
                             </div>
                         </div>
+                        <input type="hidden" name="id" value="<?php echo $product->id; ?>"/>
                         <input type="hidden" name="hidden_name" value="<?php echo $product->title; ?>"/>
                         <input type="hidden" name="hidden_price" value="<?php echo $product->price; ?>"/>
                         <input type="submit" name="add_to_cart" style="margin-top:5px;" class="btn btn-success" value="add to cat"/>

@@ -4,6 +4,7 @@
 
 include "includes/header.php";
 include "includes/babita.php";
+$orders = Order::find_all();
 if(!$session->is_signed_in ()){
     redirect ('login.php');
 }
@@ -189,20 +190,21 @@ if(isset($_POST['submitorder'])){
                     </div>
 
 
+
                     <div class="col-md-8 order-md-1">
                         <h4 class="mb-3">Billing address</h4>
-                        <form class="needs-validation" novalidate>
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="firstName">First name</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                                    <?php echo $user->first_name;?>
                                     <div class="invalid-feedback">
                                         Valid first name is required.
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName">Last name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                                    <?php echo $user->last_name;?>
                                     <div class="invalid-feedback">
                                         Valid last name is required.
                                     </div>
@@ -215,7 +217,7 @@ if(isset($_POST['submitorder'])){
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">@</span>
                                     </div>
-                                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+                                    <?php echo $user->username;?>
                                     <div class="invalid-feedback" style="width: 100%;">
                                         Your username is required.
                                     </div>
@@ -226,7 +228,7 @@ if(isset($_POST['submitorder'])){
                                 <label for="email">Email
                                     <span class="text-muted">(Optional)</span>
                                 </label>
-                                <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                                <?php echo $user->last_name;?>
                                 <div class="invalid-feedback">
                                     Please enter a valid email address for shipping updates.
                                 </div>
@@ -234,11 +236,12 @@ if(isset($_POST['submitorder'])){
 
                             <div class="mb-3">
                                 <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                                <?php echo $user->address;?>
                                 <div class="invalid-feedback">
                                     Please enter your shipping address.
                                 </div>
                             </div>
+
 
                             <div class="mb-3">
                                 <label for="address2">Address 2
@@ -280,6 +283,20 @@ if(isset($_POST['submitorder'])){
 
                             <h4 class="mb-3">Payment</h4>
 
+                            <div class="d-block my-3">
+                                <div class="custom-control custom-radio">
+                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <label class="custom-control-label" for="credit">Credit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="paypal">Paypal</label>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="cc-name">Name on card</label>
@@ -314,8 +331,8 @@ if(isset($_POST['submitorder'])){
                                 </div>
                             </div>
                             <hr class="mb-4">
-                            <a href="checkout_user.php" button class="btn btn-primary btn-lg btn-block" name="submitorder" type="submit">
-                                <i class="fa fa-credit-card"></i> </button></a>
+                             <button class="btn btn-primary btn-lg btn-block" name="submitorder" type="submit">
+                                <i class="fa fa-credit-card"></i> </button></>
                         </form>
                     </div>
                 </div>

@@ -1,92 +1,26 @@
 <?php
 include ("admin/includes/init.php");
+
+
 $products = Product::find_all ();
 
-?>
-<?php
-if(isset($_POST["add_to_cart"]))
-{
-    if(isset($_SESSION["shopping_cart"]))
-    { var_dump($_SESSION["shopping_cart"]);
-        $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-        if(!in_array($_GET["id"], $item_array_id))
-        {
-            $count = count($_SESSION["shopping_cart"]);
-            $item_array = array(
-                'item_id'       => $_GET["id"],
-                'item_name'     => $_POST["hidden_name"],
-                'item_price'    => $_POST["hidden_price"],
-                'item_quantity' => $_POST["quantity"]
-            );
-            $_SESSION["shopping_cart"][$count] = $item_array;
-        }
-        else
-        {
-            echo '<script>alert("Item Already Added")</script>';
-            echo '<script>window.location="product.php"</script>';
-        }
-    }
-    else
-    {
-        $item_array = array(
-            'item_id'       => $_GET["id"],
-            'item_name'     => $_POST["hidden_name"],
-            'item_price'    => $_POST["hidden_price"],
-            'item_quantity' => $_POST["quantity"]
-        );
-        $_SESSION["shopping_cart"][0] = $item_array;
-    }
-}
-$user = User::find_all();
-
-if(isset($_POST['submitorder'])){
-
-    $new_order = Order::create_order($product->id, $_SESSION['user'],$user->id);
-    if($new_order && $new_order->save()){
-        redirect("product.php?id={$user->id}");
-    }
-    else{
-        $message =" There are some problems saving";
-    }
-}
-
-$action = isset($_GET['action']) ? $_GET['action'] : "";
-$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-$items_per_page = 10;
-$items_total_count = Product::count_all ();
-
-$paginate = new Paginate($page, $items_per_page, $items_total_count);
-$sql = "SELECT * FROM products ";
-$sql .= "LIMIT {$items_per_page} ";
-$sql .= "OFFSET {$paginate->offset ()}";
-
-$products = Product::find_this_query ($sql);
-
-if(isset($_GET["action"]))
-{
-    if($_GET["action"] == "delete")
-    {
-        foreach($_SESSION["shopping_cart"] as $keys => $values)
-        {
-            if($values["item_id"] == $_GET["id"])
-            {
-                unset($_SESSION["shopping_cart"][$keys]);
-                echo '<script>alert("item removed")</script>';
-                echo '<script>window.location="product.php"</script>';
-
-            }
-        }
-    }
-}
+$shopping_cart=New Shopping_cart();
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home</title>
+
+
+
+
+
+    <title>Babita's Webshop- FrontEnd</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
     <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="/images/icons/favicon.png"/>
     <!--===============================================================================================-->
