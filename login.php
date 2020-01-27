@@ -2,13 +2,6 @@
 
 require_once ("includes/header.php");
 
-?>
-
-<?php
-$the_message = '';
-if($session->is_signed_in ()){
-    redirect ("index.php");
-}
 
 if(isset($_POST['submit'])){
     $username = trim ($_POST['username']);
@@ -29,8 +22,12 @@ if(isset($_POST['submit'])){
     $password = "";
 }
 ?>
-
-
+<?php
+$the_message = '';
+if($session->is_signed_in ()){
+    redirect ("index.php");
+}
+?>
 
 <br><br><br>
     <div class="container">
@@ -46,7 +43,7 @@ if(isset($_POST['submit'])){
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                        <h2 class="bg-danger"><?php /*echo $the_message; */?></h2>
+                                        <h2 class="bg-danger"><?php echo $the_message; ?></h2>
                                     </div>
                                     <form class="user" method="post">
                                         <div class="form-group">

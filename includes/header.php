@@ -1,11 +1,42 @@
 <?php
 include ("admin/includes/init.php");
 
+$total = 0;
+$tellen=0;
+if(isset($_GET["action"]))
+{
+    if($_GET["action"] == "delete")
+    {
+        foreach($_SESSION["shopping_cart"] as $keys => $values)
+        {
+            if($values["item_id"] == $_GET["id"])
+            {
+                unset($_SESSION["shopping_cart"][$keys]);
+                echo '<script>alert("item removed")</script>';
+                echo '<script>window.location="shoping-cart.php"</script>';
+
+            }
+        }
+    }
+}
 
 $products = Product::find_all ();
 
 $shopping_cart=New Shopping_cart();
 ?>
+
+    <?php
+    if(!empty($_SESSION["shopping_cart"])) {
+        $total=0;
+        foreach ($_SESSION["shopping_cart"] as $keys => $values) {
+            ?>
+               <?php $values["item_quantity"]; ?>
+
+            <?php $tellen=$tellen+$values["item_quantity"];
+                } ?>
+
+
+    <?php } ?>
 
 
 <!DOCTYPE html>
@@ -70,16 +101,14 @@ $shopping_cart=New Shopping_cart();
                 <div class="right-top-bar flex-w h-full">
                     <a href="#" class="flex-c-m trans-04 p-lr-25">
                         Help & FAQs
-                    </a>
 
-                    <?php  if (!$session->is_signed_in()) {
-                            if(isset($_SESSION['user'])){
-                                echo $_SESSION['user'];
-                           } else{
-                         echo "User";
-                            }
-                            }
-                            ?>
+                        <?php if(isset($_SESSION['user'])){
+                            echo $_SESSION['user'];
+                        } else{
+                            echo "User";
+                        }
+                        ?>
+
                         </span>
                     </a>
 
@@ -89,7 +118,7 @@ $shopping_cart=New Shopping_cart();
                         <a class="dropdown-item" href="login.php" ">
                         <span class="m">Sign IN</span>
                         </a>
-                        <a class="dropdown-item" href="user.php">
+                        <a class="dropdown-item" href="profile.php?id=<?php echo $_SESSION['user_id'];?>">
                             <i class="fas fa-user"></i>
                             Profile
                         </a>
@@ -166,9 +195,16 @@ $shopping_cart=New Shopping_cart();
                                 <a class="dropdown-item" href="login.php" ">
                                 <span class="m">Sign IN</span>
                                 </a>
-                                <a class="dropdown-item" href="user.php">
+                                <a class="dropdown-item"  href="profile.php?id=<?php echo $_SESSION['user_id'];?>">
                                     <i class="fas fa-user"></i>
                                     Profile
+
+                                    <?php if(isset($_SESSION['user_id'])){
+                                        echo $_SESSION['user'];
+                                    } else{
+                                        echo "User";
+                                    }
+                                    ?>
                                 </a>
 
                                 <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
@@ -187,13 +223,11 @@ $shopping_cart=New Shopping_cart();
 
 
 
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php echo Order::count_all ();?>">
+                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php echo $tellen;?>">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </div>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-                        <i class="zmdi zmdi-favorite-outline"></i>
-                    </a>
+
                 </div>
             </nav>
         </div>
@@ -267,7 +301,7 @@ $shopping_cart=New Shopping_cart();
                         <a class="dropdown-item" href="login.php" ">
                         <span class="m">Sign IN</span>
                         </a>
-                        <a class="dropdown-item" href="user.php">
+                        <a class="dropdown-item" href="view.php?id=<?php echo $user->id; ?>">
                             <i class="fas fa-user"></i>
                             Profile
                         </a>

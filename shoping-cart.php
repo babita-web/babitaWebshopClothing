@@ -4,8 +4,7 @@
 include('includes/header.php');
 
 $products = Product::find_all ();
-$total = 0;
-$tellen=0;
+
 
 $user = User::find_all();
 
@@ -19,22 +18,6 @@ $user = User::find_all();
         $message =" There are some problems saving";
     }
 }*/
-if(isset($_GET["action"]))
-{
-    if($_GET["action"] == "delete")
-    {
-        foreach($_SESSION["shopping_cart"] as $keys => $values)
-        {
-            if($values["item_id"] == $_GET["id"])
-            {
-                unset($_SESSION["shopping_cart"][$keys]);
-                echo '<script>alert("item removed")</script>';
-                echo '<script>window.location="shoping-cart.php"</script>';
-
-            }
-        }
-    }
-}
 
 ?>
 
@@ -82,7 +65,7 @@ if(isset($_GET["action"]))
                                 <td>
 
                                     <a href="view.php?id=<?php echo $values['item_id']; ?>">
-                                        <img src="<?php echo 'admin'.DS.$product->picture_path();?>" width="40px" height="40px">
+                                        <img src="admin/img/products/<?php echo $values['item_id']; ?>" width="40px" height="40px">
                                     </a></td>
                                 <td class="column-3"><?php echo $values["item_price"]; ?></td>
                                 <td class="column-4"><?php echo $values["item_quantity"]; ?></td>

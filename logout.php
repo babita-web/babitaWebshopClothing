@@ -6,6 +6,11 @@ redirect ('login.php');
 session_destroy();
 
 ?>
-<?php
+<br>
 
+<br>
+
+<br>
+<?php
+include ("includes/babita.php");
 include ("includes/footer.php"); ?>

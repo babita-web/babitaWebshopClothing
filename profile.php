@@ -1,75 +1,113 @@
 <?php
 include('includes/header.php');
-require_once('admin/includes/init.php');
-/*if(empty($_GET['id'])){
+
+if(empty($_GET['id'])){
     redirect("index.php");
-}*/
+}
 
+$user = User::find_by_id($_GET['id']);
 
-$profiles = Photo::find_by_id($_GET['id']);
+/* comment*/
+if(isset($_POST['submitcomment'])){
 
-
-
-$products = Product::find_the_products($photo->id);
-
+    $body = trim($_POST['body']);
+    $new_comment = Comment::create_comment($product->id, $_SESSION['user'], $body);
+    if($new_comment && $new_comment->save()){
+        redirect("view.php?id={$product->id}");
+    }
+    else{
+        $message =" There are some problems saving";
+    }
+}
+else{
+    //  $author = "";
+    $body = "";
+}
+$comments = Comment::find_the_comments($product->id);
 
 ?>
+<br>
+<br>
+<br>
+<br>
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
 
+    <div class=" row">
+        <div class="col">
+        <img class="img-fluid rounded" src="<?php echo'admin'.DS.$user->picture_path(); ?>" width="500" height="500" alt="">
+        </div>
+        <div class="col">
+            <div class="wrap-table-user">
+               <ul>
 
-<!-- Page Content -->
-<!--div class="container">
-    <div class="row">
-        <!-- Post Content Column -->
-<div class="col-lg-8">
-    <!-- Title -->
-    <h1 class="mt-4"><?php echo $photo->title; ?></h1>
-    <!-- Author -->
+                        <li class="column-1">Username : <?php echo $user->username; ?></li>
+                   <hr>
+                        <li class="column-2">Name : <?php echo $user->first_name; ?></li>
+                   <hr>
+                        <li class="column-3">Last Name : <?php echo $user->last_name; ?></li>
+                   <hr>
+                        <li class="column-4">Position :  <?php $role=Role::find_by_id($_GET['id']); echo $role->position; ?></li>
+                   <hr>
+                        <li class="column-5">Address : <?php echo $user->address; ?></li>
+                   <hr>
+                        <li class="column-6">Email : <?php echo $user->email; ?></li>
+                    </ul>
 
-    <hr>
-    <!-- Date/Time -->
-    <p>   <?php
-        $date = date('r');
-        echo $date;
-        $photo->title = $date; ?> </p>
-
-
-    <hr>
-    <!-- Preview Image -->
-    <img class="img-fluid rounded" src="<?php echo'admin'.DS.$photo->picture_path(); ?>" width="50" height="50" alt="">
-    <hr>
-
-    <div class="container">
-        <nav class="navbar">
-            <!-- Site logo -->
-
-            <?php foreach($products as $product): ?>
-
-                <div class="media mb-4">
-
-                    <div class="media-body">
-
-                        <h5 class="mt-0">Price:  <?php  echo $product->price; ?> </h5>
-                        <p><strong>Product ID: </strong> <?php echo $product->id; ?></p>
-                        <p><strong>Product Description: </strong><?php echo $product->description; ?></p>
-
-                        <?php endforeach; ?>
-
-                        <div class="card my-4">
-                           <td><a href="order.php?id=<?php echo $photo->id; ?>" class= "btn btn-primary">Add to the Cart<i class="fas fa-first-order-plus"></i></a></td>
-                            </div>
-                        </div>
-
-
+            </div>
+        </div>
     </div>
-</div>
-</div>
 
 
 
-</nav>
-</div>
-</div>
 
+
+
+
+
+
+    <!-- Comments Form -->
+    <div class="card my-4">
+
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+
+                    <h5 class="mt-0">Author </h5>
+
+                    <?php if(isset($_SESSION['user'])){
+                        echo $_SESSION['user'];
+                    } else{
+                        echo "User";
+                    }
+                    ?>
+
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" name="body"></textarea>
+                </div>
+
+
+                <button name="submitcomment" type="submit" class="btn btn-primary">Leave Comment</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <?php foreach($comments as $comment): ?>
+        <!-- Single Comment -->
+
+
+        <div class="col-4">
+            <img class="rounded-circle" src="http://placehold.it/20x20" alt="">
+            <div class="media-body">
+                <h5 class="mt-0"> <?php  echo $comment->author; ?> </h5>
+                <p><?php echo $comment->body; ?></p>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
 

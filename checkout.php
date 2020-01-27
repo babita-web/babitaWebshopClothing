@@ -80,6 +80,8 @@ if(isset($_POST['submitorder'])){
         <tr>
 
             <th scope="col">Product</th>
+
+            <th scope="col">Product name</th>
             <th scope="col">Price</th>
             <th scope="col">Qnty</th>
             <th scope="col">Total Price</th>
@@ -97,7 +99,10 @@ if(isset($_POST['submitorder'])){
                 <tr>
                 <!-- <form method="post" action="product.php?action=add&id=<?php /*echo $product->id; */?>">-->
                 <div class="col">
-
+                    <td>
+                        <a href="view.php?id=<?php echo $values['item_id']; ?>">
+                            <img src="admin/img/products/<?php echo $values['item_id']; ?>" width="40px" height="40px">
+                        </a></td>
                     <td> <h6 class="my-0"><?php echo $values["item_name"]; ?></h6></td>
                     <td> <h6 class="my-0"><?php echo $values["item_price"]; ?></h6></td>
                     <td>  <h6 class="my-0"> <?php echo $values["item_quantity"]; ?></h6></td>
