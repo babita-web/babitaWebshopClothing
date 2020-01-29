@@ -1,6 +1,13 @@
 <?php
 include ("admin/includes/init.php");
 
+if($session->is_signed_in ()){
+    redirect ('index.php');
+}
+
+if(!$session->is_signed_in ()){
+    redirect ('login.php');
+}
 $total = 0;
 $tellen=0;
 if(isset($_GET["action"]))
@@ -195,17 +202,14 @@ $shopping_cart=New Shopping_cart();
                                 <a class="dropdown-item" href="login.php" ">
                                 <span class="m">Sign IN</span>
                                 </a>
-                                <a class="dropdown-item"  href="profile.php?id=<?php echo $_SESSION['user_id'];?>">
-                                    <i class="fas fa-user"></i>
-                                    Profile
+                                <?php if (isset($_SESSION['user_id'])){?>
 
-                                    <?php if(isset($_SESSION['user_id'])){
-                                        echo $_SESSION['user'];
-                                    } else{
-                                        echo "User";
-                                    }
-                                    ?>
+                                     <a class="dropdown-item"  href="profile.php?id=<?php echo $_SESSION['user_id'];?>">
+                                    <i class="fas fa-user"></i>
+                                    Profile   <?php echo $_SESSION['user'];?>
                                 </a>
+                              <?php  }?>
+
 
                                 <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out"></i>

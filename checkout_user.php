@@ -55,14 +55,14 @@ if(isset($_POST['submitorder'])){
         </div>
     </div>
     <body>
-    <div class="loader"></div>
+
 
     <main id="main" role="main">
         <section id="checkout-banner">
             <div class="container py-5 text-center">
-                <i class="fa fa-credit-card fa-3x text-dark"></i>
+
                 <h2 class="my-3">Checkout form</h2>
-                <p class="lead">Below fill all details to pay your order.</p>
+              
             </div>
         </section>
         <section id="checkout-container">
@@ -117,18 +117,21 @@ if(isset($_POST['submitorder'])){
 
     </table>
     <hr>
-
+<h4> Total amount : <?php echo $total;?></h4>
+        <br>
     <div class="m-l-25 m-r--38 m-lr-0-xl">
-        <?php if($total<100) {
+        <?php
+        if($total<100) {
             $total = 6 + $total;
-            echo " 6 euro for shipping charge for a order under 100 €";
+            echo "* 6 euro for shipping charge for a order under 100 €";
+
         } ?><br>
     </div>
-
+<br>
         <h3 class="mtext-109 cl2 p-b-30">
-            Total : <?php echo number_format($total,2);?>  €
+            Total Amount to be Paid  : <?php echo number_format($total,2);?>  €
             <br>
-            Total items:  <?php echo $tellen;?></h3>
+            For Total item s:  <?php echo $tellen;?></h3>
     </ul>
 
 
@@ -157,12 +160,12 @@ if(isset($_POST['submitorder'])){
             });
         },
 
-        // Finalize the transaction
+
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                // Show a success message to the buyer
-                alert('Transaction completed by ' + details.payer.name.given_name + '!');
 
+                //alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                window.location.href = "thankyou.php";
                 // Call your server to save the transaction
                 return fetch('/paypal-transaction-complete', {
                     method: 'post',

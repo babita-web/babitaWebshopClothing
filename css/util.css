@@ -18,6 +18,10 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+.section{
+	background-color: lightgoldenrodyellow;
+}
+
 
 body, html {
 	font-family: Arial, sans-serif;

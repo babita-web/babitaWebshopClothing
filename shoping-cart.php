@@ -37,12 +37,11 @@ $user = User::find_all();
     </div>
 </div>
 
-
 <!-- Shoping Cart -->
+<div class="container">
 <form class="bg0 p-t-75 p-b-85">
-    <div class="container">
         <div class="row">
-            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                 <div class="m-l-25 m-r--38 m-lr-0-xl">
                     <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart">
@@ -57,6 +56,7 @@ $user = User::find_all();
                             <?php
                             if(!empty($_SESSION["shopping_cart"])) {
                             $total=0;
+                            $tellen=0;
                             foreach ($_SESSION["shopping_cart"] as $keys => $values) {
                             ?>
 
@@ -110,8 +110,9 @@ $user = User::find_all();
                     </div>
                 </div>
         </div><a href="checkout.php" button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">Proceed to Checkout</button></a>
-    </div>
+
 </form>
+</div>
 
 <br>
 

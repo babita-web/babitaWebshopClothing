@@ -1,16 +1,15 @@
 
 <?php
-
 include('includes/header.php');
 
 
-if (isset($_POST["add_to_cart"])) {
-    if (isset($_SESSION["shopping_cart"])) {
-        var_dump($_SESSION["shopping_cart"]);
-        $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-        if (!in_array($_GET["id"], $item_array_id)) {
-            $count = count($_SESSION["shopping_cart"]);
-            $item_array = array(
+        if (isset($_POST["add_to_cart"])) {
+            if (isset($_SESSION["shopping_cart"])) {
+                var_dump($_SESSION["shopping_cart"]);
+                $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
+                if (!in_array($_GET["id"], $item_array_id)) {
+                    $count = count($_SESSION["shopping_cart"]);
+                    $item_array = array(
                 'item_id' => $_GET["id"],
                 'item_name' => $_POST["hidden_name"],
                 'item_price' => $_POST["hidden_price"],

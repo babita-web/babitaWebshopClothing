@@ -23,7 +23,7 @@ include ("includes/content-top.php");?>
 <!--                        <th>Email id</th>-->
                         <th>Position</th>
 <!--                        <th>address</th>-->
-                       <th>Orders</th>
+                      <!-- <th>Orders</th>-->
                         <th>View</th>
                         <th>Edit?</th>
                         <th>Delete?</th>
@@ -46,14 +46,14 @@ include ("includes/content-top.php");?>
                                 echo $role->position; ?></td>
 
                          <!--   <td><?php /*echo $user->address; */?></td>-->
-                            <td>
-                                <a href="orders_user.php?id=<?php echo $user->id; ?>">
+                          <!--  <td>
+                                <a href="orders_user.php?id=<?php /*echo $user->id; */?>">
                                     <?php
-                                   $orders = Order::find_the_orders($user->id);
+/*                                   $orders = Order::find_the_orders($user->id);
                                     echo count($orders);
-                                    ?>
+                                    */?>
                                 </a>
-                            </td>
+                            </td>-->
                             <td><a href="../user.php?id=<?php echo $user->id; ?>" class="btn btn-danger rounded-0"><i class="fas fa-eye"></i></a></td>
                             <td><a href="edit_user.php?id=<?php echo $user->id; ?>" class="btn btn-danger rounded-0"><i class="far fa-edit"></i></a></td>
                             <td><a href="delete_user.php?id=<?php echo $user->id; ?>" class="btn btn-danger rounded-0">
